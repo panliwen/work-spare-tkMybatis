@@ -1,8 +1,6 @@
 package com.example.demo.rest;
 
-import com.example.demo.entity.TestAuto;
-import com.example.demo.entity.TestParent;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import com.example.demo.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,25 @@ public class RestUser {
     private UserService userService;
 
 
-    @GetMapping( "/getAllUser")
-    public List<User> getAllUser() {
-        List<User> userList = userService.getAllUser();
+    @GetMapping( "/getUseVo")
+    public UserVo getUseVo() {
+
+        UserVo userVo = userService.getUseVo();
+        return userVo;
+    }
+
+    @GetMapping( "/getUserAll")
+    public List<User> getUserAll() {
+
+        List<User> userList = userService.getUserAll();
         return userList;
+    }
+
+    @GetMapping( "/getUser11All")
+    public List<User11> getUser11All() {
+
+        List<User11> user11List = userService.getUser11All();
+        return user11List;
     }
 
 
@@ -41,14 +54,21 @@ public class RestUser {
         System.out.println(user.getId()+"--------------------");
         return "插入成功";
     }
+    @GetMapping("/getkeyId")
+    public String getkeyId(@Param("id") Long id) {
+
+        User user = userService.getKeyUserById(id);
+        return user.getUsername();
+    }
 
     @PostMapping("/insert22")
     public String insert22(
+            @Param("id") Long id,
             @Param("username") String username,
             @Param("age") String age,
             @Param("sex") String sex) {
         User user = new User();
-
+        user.setId(id);
         user.setUsername(username);
         user.setAge(age);
         user.setSex(sex);

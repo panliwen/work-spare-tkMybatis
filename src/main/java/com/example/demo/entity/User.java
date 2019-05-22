@@ -18,6 +18,7 @@ public class User implements Serializable {
     public String age;
     public String sex;
 
+
     public Long getId() {
         return id;
     }

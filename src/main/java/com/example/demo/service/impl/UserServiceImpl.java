@@ -1,10 +1,9 @@
 package com.example.demo.service.impl;
 
 
+import com.example.demo.dao.User11Dao;
 import com.example.demo.dao.UserDao;
-import com.example.demo.entity.TestAuto;
-import com.example.demo.entity.TestParent;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,8 @@ public class UserServiceImpl  implements UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private User11Dao user11Dao;
 
 
     @Override
@@ -45,7 +46,12 @@ public class UserServiceImpl  implements UserService {
     }
 
 
-
+    /**
+     * 条件筛选的内容
+     * @param id
+     * @param username
+     * @return
+     */
     @Override
     public List<User> findByKeyIdAndUsername(int id, String username) {
 
@@ -58,10 +64,52 @@ public class UserServiceImpl  implements UserService {
 
         return users;
     }
-
+    /**
+     * 获取所有用户的信息
+     * 使用Vo将两个数据库的表使用Vo封装返回给前端页面的数据
+     * @return
+     */
     @Override
-    public List<User> getAllUser() {
+    public UserVo getUseVo() {
+
+        UserVo userVo= new UserVo();
+
         List<User> userList = userDao.selectAll();
-        return userList;
+        List<User11> user11s = user11Dao.selectAll();
+
+        userVo.setUserList(userList);
+        userVo.setUser11List(user11s);
+
+
+        return userVo;
+    }
+
+    /**
+     * 使用key主键查询对应的数据信息
+     * @param id
+     * @return
+     */
+    public User getKeyUserById(Long id) {
+        return userDao.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 获取所有用户信息列表
+     *
+     * @return 用户集合
+     */
+    @Override
+    public List<User> getUserAll() {
+        return userDao.selectAll();
+    }
+
+    /**
+     * 获取所有用户列表
+     *
+     * @return 用户集合
+     */
+    @Override
+    public List<User11> getUser11All() {
+        return user11Dao.selectAll();
     }
 }
