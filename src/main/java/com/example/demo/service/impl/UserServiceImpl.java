@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -112,4 +116,52 @@ public class UserServiceImpl  implements UserService {
     public List<User11> getUser11All() {
         return user11Dao.selectAll();
     }
+
+
+
+    public void getUserDate() throws ParseException {
+        SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
+
+        User user =  new User();
+        user.setSex("nan");
+        user.setAge("23");
+        user.setDate(format.parse("2019-5-10"));
+        user.setUsername("lisi");
+
+        userDao.insert(user);
+
+    }
+    public List<User> getUserDateEquels(User user) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        List<User> userList = new ArrayList<>();
+
+        List<User> userList1 = userDao.selectAll();
+
+
+
+        /******************************************/
+        String beginDate="2019-5-17";
+        String endDate="2019-5-27";
+
+        List<Date> allDate = new FindDateByData().findAllDate(beginDate, endDate);
+        for (User user1 : userList1) {
+            System.out.println(user1.getDate());
+            for (Date date : allDate) {
+                if (user1.equals((date))){
+                    userList.add(user1);
+                }
+                System.out.println(date);
+//                continue;
+            }
+//            continue;
+        }
+        for (User user1 : userList) {
+            System.out.println(user1+"*****************************");
+        }
+
+
+        return null;
+    }
+
+
 }
